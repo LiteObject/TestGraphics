@@ -20,8 +20,8 @@
         public static void Main(string[] args)
         {
             // Create string to draw.
-            var drawString = "Sample Text";
-            var filePath = Path.Combine(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\")), "Images", "TestImage.jpg");
+            var drawString = "Sample Text 1234567890";
+            var filePath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\", "Images", "TestImage.jpg"));
 
             AddText(filePath, drawString, Color.Teal, 120, 50, 50);
 
@@ -62,14 +62,22 @@
             {
                 Brush brush = new SolidBrush(color);
 
-                /*  var textSize = graphics.MeasureString(text, font);
-                var position = new Point(bitmap.Width - ((int)textSize.Width + relativePositionX), bitmap.Height - ((int)textSize.Height + relativePositionY)); */
+                var textSize = graphics.MeasureString(text, font);
+                /*  var position = new Point(bitmap.Width - ((int)textSize.Width + relativePositionX), bitmap.Height - ((int)textSize.Height + relativePositionY)); */
 
                 var position = new Point(positionX, positionY);
+                
+                // graphics.FillRectangle(Brushes.LightBlue, new RectangleF(positionX, positionY, textSize.Width, textSize.Height));
+                using (Brush brush2 = new SolidBrush(Color.FromArgb(50, Color.Black)))
+                {
+                    var rectangle = new Rectangle(positionX, positionY, (int)Math.Round(textSize.Width, 5), (int)Math.Round(textSize.Height, 5));
+                    graphics.FillRoundedRectangle(brush2, rectangle, 16);
+                    // graphics.FillRectangle(brush2, rectangle);
+                }
 
                 graphics.DrawString(text, font, brush, position);
 
-                var outputFilenameWithPath = Path.Combine(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\")), "Output", $"{Guid.NewGuid().ToString()}.jpg");
+                var outputFilenameWithPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\", "Output", $"{Guid.NewGuid().ToString()}.jpg"));
 
                 // using var mStream = new MemoryStream();
                 bitmap.Save(outputFilenameWithPath, ImageFormat.Jpeg);
